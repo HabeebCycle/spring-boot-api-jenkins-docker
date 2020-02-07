@@ -10,4 +10,10 @@ class JenkinsDockerApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void printOutMessage(){
+        int var = 5;
+        System.out.print("Test Pass");
+    }
+
 }
