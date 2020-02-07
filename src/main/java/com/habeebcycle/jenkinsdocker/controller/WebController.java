@@ -15,6 +15,6 @@ public class WebController {
 
     @GetMapping("/welcome")
     public String welcome(){
-        return "Thank you and welcome";
+        return "Thank you and welcome to hour house";
     }
 }
