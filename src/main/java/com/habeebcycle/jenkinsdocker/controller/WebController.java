@@ -12,4 +12,9 @@ public class WebController {
     public String greet(){
         return "Welcome to our API";
     }
+
+    @GetMapping("/welcome")
+    public String welcome(){
+        return "Thank you and welcome";
+    }
 }
