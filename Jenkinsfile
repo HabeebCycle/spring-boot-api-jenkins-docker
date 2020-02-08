@@ -13,14 +13,21 @@ node {
         mvnHome = tool name: 'MAVEN_HOME', type: 'maven'
     }
 
-    stage('Build') {
+    stage('Build Code') {
         // Run the maven build
-        withEnv(["MVN_HOME=$mvnHome"]) {
-            if (isUnix()) {
-                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
-            } else {
-                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+        try{
+            withEnv(["MVN_HOME=$mvnHome"]) {
+                if (isUnix()) {
+                    sh '"$MVN_HOME/bin/mvn" test clean package'
+                } else {
+                    bat(/"%MVN_HOME%\bin\mvn" test clean package/)
+                }
             }
+        } catch(err) {
+            step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+            if (currentBuild.result == 'UNSTABLE')
+                currentBuild.result = 'FAILURE'
+            throw err
         }
     }
 
@@ -77,7 +84,7 @@ node {
                 }else{
                     bat("docker stop api-jenkins-docker ")
                 }
-            }catch (error){}
+            }catch (err){}
 
             if (isUnix()) {
                 sh "docker run -d --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}"
@@ -88,7 +95,7 @@ node {
             //dir ('webapp') {
             //  sh 'mvn exec:java -DskipTests'
             //}
-        } catch (error) {
+        } catch (err) {
         } finally {
             // Stop and remove database container here
             //sh 'docker-compose stop db'
