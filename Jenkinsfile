@@ -34,7 +34,8 @@ node {
     stage('Test image') {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
-
+        sh 'echo "Skipping this stage"'
+        /*
         app.inside {
             if (isUnix()) {
                 sh 'echo "Tests passed"'
@@ -42,6 +43,7 @@ node {
                 bat("echo 'Tests Passed'")
             }
         }
+        */
     }
 
     stage('Push image') {
