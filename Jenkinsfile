@@ -80,9 +80,9 @@ node {
             }catch (error){}
 
             if (isUnix()) {
-                sh "docker run --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}"
+                sh "docker run -d --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}"
             }else{
-                bat("docker run --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}")
+                bat("docker run -d --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}")
             }
             // Run tests using Maven
             //dir ('webapp') {
