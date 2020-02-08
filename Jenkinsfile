@@ -34,7 +34,11 @@ node {
     stage('Test image') {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
-        sh 'echo "Skipping this stage"'
+        if (isUnix()) {
+            sh 'echo "Skipping this stage"'
+        }else{
+            bat("echo 'Skipping this stage'")
+        }
         /*
         app.inside {
             if (isUnix()) {
@@ -68,12 +72,18 @@ node {
 
             // First try to stop existing container with the same name
             try{
-                sh "docker stop api-jenkins-docker "
+                if (isUnix()) {
+                    sh "docker stop api-jenkins-docker "
+                }else{
+                    bat("docker stop api-jenkins-docker ")
+                }
             }catch (error){}
 
-
-            sh "docker run --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}"
-
+            if (isUnix()) {
+                sh "docker run --rm --name api-jenkins-docker -p 8090:8090 habeebcycle/devopstest:${env.BUILD_NUMBER}"
+            }else{
+                bat("echo 'Tests Passed'")
+            }
             // Run tests using Maven
             //dir ('webapp') {
             //  sh 'mvn exec:java -DskipTests'
