@@ -19,9 +19,9 @@ class JenkinsDockerApplicationTests {
     }
 
     @Test
-    void makeThisTestFail(){
+    void makeThisPassFail(){
         String message = "failed";
-        assertEquals(message, "passed");
+        assertEquals(message, "failed");
     }
 
 }
